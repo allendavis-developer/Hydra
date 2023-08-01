@@ -1,0 +1,5 @@
+# Visual studio cache directory
+.vs/
+
+# Prevent commiting builds
+out/
