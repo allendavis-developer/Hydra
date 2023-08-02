@@ -21,7 +21,7 @@ namespace Hydra {
 		void SetLevel(LogLevel level);
 
 		// Getters and setters
-		std::shared_ptr<spdlog::logger> GetLogger() { return m_Logger; }
+		inline std::shared_ptr<spdlog::logger> GetLogger() { return m_Logger; }
 
 		// Logging functions
 
@@ -45,4 +45,6 @@ namespace Hydra {
 		std::shared_ptr<spdlog::logger> m_Logger;
 		std::string m_LoggerName;
 	};
+
 }
+

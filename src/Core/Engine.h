@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Window.h"
 #include "Logger.h"
+#include "Window.h"
+#include "Renderer/Renderer.h"
+
 
 namespace Hydra {
 	// Houses the main Engine components such as the Engine window and the Engine Renderer
@@ -14,13 +16,13 @@ namespace Hydra {
 		void Update();
 		void Stop();
 
-		static Logger& GetLogger() { return m_Logger;  }
 	private:
 		bool m_IsRunning;
 
 		// Engine components
+		Logger m_Logger;
 		Window m_Window;
-		static Logger m_Logger;
+		Renderer m_Renderer;
 
 	};
 }

@@ -11,10 +11,15 @@ set(HYDRA_VENDOR_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/vendor-builds")
 file(GLOB HYDRA_SOURCES CONFIGURE_DEPENDS
 	"${HYDRA_SOURCE_DIR}/*.cpp"
 	"${HYDRA_SOURCE_DIR}/Core/*.cpp"
+	"${HYDRA_SOURCE_DIR}/Renderer/*.cpp"
+
 )
 
 # Add Hydra sources to be compiled
 add_executable (Hydra ${HYDRA_SOURCES})
+
+# Setting include directories for Hydra from Hydra
+target_include_directories(Hydra PUBLIC "${HYDRA_SOURCE_DIR}")
 
 # ----------------- SETTING UP THIRD PARTY LIBRARIES ------------------------
 
@@ -31,5 +36,14 @@ add_subdirectory("${SPDLOG_DIR}" "${HYDRA_VENDOR_BUILD_DIR}/spdlog")
 
 target_link_libraries(Hydra PRIVATE spdlog)
 target_include_directories(Hydra PUBLIC "${SPDLOG_DIR}/include")
+
+# glad
+set(GLAD_DIR "${HYDRA_VENDOR_DIR}/glad")
+add_library(glad "${GLAD_DIR}/src/glad.c")
+target_include_directories(glad PUBLIC "${GLAD_DIR}/include")
+
+target_link_libraries(Hydra PRIVATE glad)
+target_include_directories(Hydra PUBLIC "${GLAD_DIR}/include")
+
 
 # ---------------------------------------------------------------------------

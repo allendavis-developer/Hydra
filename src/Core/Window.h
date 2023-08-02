@@ -1,4 +1,5 @@
 #pragma once
+#include "Logger.h"
 #include <GLFW/glfw3.h>
 
 namespace Hydra {
@@ -15,9 +16,8 @@ namespace Hydra {
 	{
 	public:
 		Window();
-		Window(const char* title, unsigned int width, unsigned int height);
 
-		void Init();
+		void Init(const char* title, unsigned int width, unsigned int height, Logger* logger);
 		void Shutdown();
 		void SwapBuffers();
 
@@ -32,6 +32,7 @@ namespace Hydra {
 		GLFWwindow* m_GLFWWindow;
 
 		WindowData m_Data;
+		Logger* m_Logger;
 
 		// ------------ STATICS -----------
 		// This is static because all instances of the Window class will use one instance of GLFW

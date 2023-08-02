@@ -9,29 +9,27 @@ namespace Hydra {
 
 	// Initializing member variables to defaults
 	Window::Window()
-		: m_GLFWWindow(nullptr)
+		: m_GLFWWindow(nullptr), m_Logger(nullptr)
 	{
 		m_Data.Title = "Hydra Engine";
 		m_Data.Width = 800;
 		m_Data.Height = 600;
 	}
 
-	Window::Window(const char* title, unsigned int width, unsigned int height)
-		: m_GLFWWindow(nullptr)
+
+	void Window::Init(const char* title, unsigned int width, unsigned int height, Logger* logger)
 	{
 		m_Data.Title = title;
 		m_Data.Width = width;
 		m_Data.Height = height;
-	}
+		m_Logger = logger;
 
-	void Window::Init()
-	{
 		if (!s_IsGLFWInitialized)
 		{
 			// Initialize GLFW 
 			int glfwSuccess = glfwInit();
 			if (!glfwSuccess)
-				Engine::GetLogger().Error("Failed to initialize GLFW!");
+				m_Logger->Error("Failed to initialize GLFW!");
 		}
 
 		// Initialize Window 
@@ -39,11 +37,13 @@ namespace Hydra {
 		if (!m_GLFWWindow)
 		{
 			// Failed to initialize GLFW Window
-			Engine::GetLogger().Error("Failed to create GLFW window!");
+			m_Logger->Error("Failed to create GLFW window!");
 		}
 
 		// Create the OpenGL context
 		glfwMakeContextCurrent(m_GLFWWindow);
+
+		m_Logger->Info("Successfully created window!");
 
 		s_WindowInstancesCount += 1;
 	}
