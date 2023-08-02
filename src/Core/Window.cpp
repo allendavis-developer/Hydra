@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Engine.h"
 #include "Window.h"
 
 namespace Hydra {
@@ -30,7 +31,7 @@ namespace Hydra {
 			// Initialize GLFW 
 			int glfwSuccess = glfwInit();
 			if (!glfwSuccess)
-				std::cout << "Failed to initialize GLFW!" << std::endl;
+				Engine::GetLogger().Error("Failed to initialize GLFW!");
 		}
 
 		// Initialize Window 
@@ -38,7 +39,7 @@ namespace Hydra {
 		if (!m_GLFWWindow)
 		{
 			// Failed to initialize GLFW Window
-			std::cout << "Couldn't create GLFW window!" << std::endl; 
+			Engine::GetLogger().Error("Failed to create GLFW window!");
 		}
 
 		// Create the OpenGL context

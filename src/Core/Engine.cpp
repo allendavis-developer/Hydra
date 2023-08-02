@@ -2,7 +2,9 @@
 #include "Engine.h"
 
 namespace Hydra {
-	
+	// Static assignment
+	Logger Engine::m_Logger("Engine");
+
 	// Constructor initializes some default values
 	Engine::Engine()
 		: m_Window("Hydra Engine", 1280, 720), m_IsRunning(false)
@@ -12,20 +14,22 @@ namespace Hydra {
 
 	void Engine::Start()
 	{
-		// Initialization code goes here
-		std::cout << "Hydra Engine Started!" << std::endl;
-
-		// Initialize Window
+		// Initialize Engine Components
 		m_Window.Init();
 
+		m_Logger.Init();
+		Engine::GetLogger().SetLevel(LogLevel::Trace);
+		m_Logger.Info("Hydra Engine Started");
+
 		m_IsRunning = true;
-		
+
+
 	}
 
 	void Engine::Update()
 	{
 		// Code that runs every frame goes here
-		std::cout << "Hydra Engine Update Started" << std::endl;
+		m_Logger.Info("Hydra Engine Update Started!");
 
 		// Program Loop
 		while (m_IsRunning)
@@ -43,6 +47,6 @@ namespace Hydra {
 	void Engine::Stop()
 	{
 		// Cleanup code goes here
-		std::cout << "Hydra Engine Stopped" << std::endl;
+		m_Logger.Info("Hydra Engine Stopped");
 	}
 }
