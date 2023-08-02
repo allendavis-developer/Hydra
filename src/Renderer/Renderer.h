@@ -9,10 +9,12 @@ namespace Hydra {
         Renderer() = default;
 
         void Init(Logger* logger);
+        void InitQuadVAO();
         void Draw();
     private:
-        static bool s_GLADInitialized;
         Logger* m_Logger;
+        unsigned int m_QuadVAO;
+        static bool s_GLADInitialized;
     };
 
 }
