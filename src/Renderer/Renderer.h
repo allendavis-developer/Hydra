@@ -15,9 +15,11 @@ namespace Hydra {
         void InitQuadVAO();
         void InitQuadShader();
         void Draw();
+
+        static const Shader& GetQuadShader() { return m_QuadShader; }
     private:
         unsigned int m_QuadVAO;
-        Shader m_QuadShader;
+        static Shader m_QuadShader;
         Sprite m_TestSprite;
     };
 }

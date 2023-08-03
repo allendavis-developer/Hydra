@@ -73,5 +73,11 @@ target_include_directories(stb_image PUBLIC "${STB_IMAGE_DIR}")
 target_link_libraries(Hydra PRIVATE stb_image)
 target_include_directories(Hydra PUBLIC "${HYDRA_VENDOR_DIR}/stb_image")
 
+# glm
+set(GLM_DIR "${HYDRA_VENDOR_DIR}/glm")
+add_subdirectory("${GLM_DIR}" "${HYDRA_VENDOR_DIR}/glm")
+
+target_link_libraries(Hydra PRIVATE glm)
+target_include_directories(Hydra PUBLIC "${GLM_DIR}")
 
 # ---------------------------------------------------------------------------

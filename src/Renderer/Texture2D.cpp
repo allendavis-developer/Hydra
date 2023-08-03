@@ -16,7 +16,6 @@ namespace Hydra {
     void Texture2D::LoadFromFile(const std::string& filepath)
     {
         glGenTextures(1, &m_TextureID);
-        stbi_set_flip_vertically_on_load(true);
         // Loading the image with stb
         unsigned char* data = stbi_load(filepath.c_str(), &m_Width, &m_Height, &m_ColorChannelsCount, 0);
         

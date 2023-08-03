@@ -23,7 +23,7 @@ namespace Hydra {
 		m_Logger.Trace("Started!");
 
 		// Initializing Window
-		m_Window.Init("HydraEngine", 800, 600, &m_Logger);
+		m_Window.Init("HydraEngine", 1280, 720, &m_Logger);
 
 		// Initialize GLAD
 		int gladSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);

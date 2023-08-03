@@ -1,22 +1,27 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "Renderer.h"
 #include "Core/Log.h"
 #include "Texture2D.h"
-#include "Core/ResourceManager.h"
+#include "Math/Vector2.h"
 
 namespace Hydra {
+    Shader Renderer::m_QuadShader;
 
     Renderer::Renderer()
-        : m_QuadVAO(0), m_QuadShader(), m_TestSprite(Sprite())
+        : m_QuadVAO(0), 
+        m_TestSprite(Vector2<float>(640.0f, 360.0f), 0.0f, Vector2<float>(300.0f, 300.0f))
     {
 
     }
 
     void Renderer::Init()
     {
-           
         InitQuadVAO();
         InitQuadShader();
 
@@ -26,6 +31,15 @@ namespace Hydra {
     void Renderer::InitQuadShader()
     {
         m_QuadShader.Load(ShaderTypes::QuadShader);
+           
+        // Creating the view matrix
+        glm::mat4 view = glm::mat4(1.0f);
+        m_QuadShader.SetMat4("uView", view);
+
+        // Creating the projection matrix
+        glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
+        m_QuadShader.SetMat4("uProjection", projection);
+
     }
 
     void Renderer::Draw()
@@ -35,7 +49,7 @@ namespace Hydra {
 
         m_QuadShader.Use();
         glBindVertexArray(m_QuadVAO);
-        m_TestSprite.BindTexture();
+        m_TestSprite.Use();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
     

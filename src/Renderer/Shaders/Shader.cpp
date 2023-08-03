@@ -102,6 +102,13 @@ namespace Hydra {
         glUseProgram(m_ProgramID);
     }
 
+    void Shader::SetMat4(const char* uniformName, const glm::mat4& matrix) const
+    {
+        Use();
+        unsigned int uniformLocation = glGetUniformLocation(m_ProgramID, uniformName);
+        glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
     Shader::~Shader()
     {
         if (m_ProgramID != 0)

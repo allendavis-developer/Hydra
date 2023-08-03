@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Hydra
 {
@@ -14,9 +17,13 @@ namespace Hydra
             out vec3 color;
             out vec2 textureCoord;
 
+            uniform mat4 uModel;
+            uniform mat4 uView;
+            uniform mat4 uProjection;
+
             void main()
             {
-	            gl_Position = vec4(aPos.xyz, 1.0f);
+	            gl_Position = uProjection * uView * uModel * vec4(aPos.xyz, 1.0f);
                 // Outputs
                 color = aColor;
                 textureCoord = aTextureCoord;
@@ -31,7 +38,7 @@ namespace Hydra
             in vec2 textureCoord;
 
             uniform sampler2D textureSampler;
-
+        
 
             void main()
             {
@@ -57,6 +64,9 @@ namespace Hydra
 
         void Load(ShaderTypes type);
         void Use() const;
+
+        // Setting uniforms
+        void SetMat4(const char* uniformName, const glm::mat4& matrix) const;
     private:
         unsigned int m_ProgramID;
 
