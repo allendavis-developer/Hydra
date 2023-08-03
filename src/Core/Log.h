@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine.h"
-#include "Logger.h"
+#include "Core/Engine.h"
+#include "Core/Logger.h"
 
 #define HYDRA_INFO(...) Engine::GetLogger().Info(__VA_ARGS__)
 #define HYDRA_ERROR(...) Engine::GetLogger().Error(__VA_ARGS__)

@@ -1,5 +1,8 @@
 #include <iostream>
+#include <glad/glad.h>
+
 #include "Engine.h"
+#include "Log.h"
 
 namespace Hydra {
 	// Static assignment
@@ -9,7 +12,7 @@ namespace Hydra {
 	Engine::Engine()
 		: m_IsRunning(false), m_Renderer()
 	{
-
+		
 	}
 
 	void Engine::Start()
@@ -19,8 +22,20 @@ namespace Hydra {
 		m_Logger.SetLevel(LogLevel::Trace);
 		m_Logger.Trace("Started!");
 
-		// Initializing window and renderer
-		m_Window.Init("HydraEngine", 1280, 720, &m_Logger);
+		// Initializing Window
+		m_Window.Init("HydraEngine", 800, 600, &m_Logger);
+
+		// Initialize GLAD
+		int gladSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		if (!gladSuccess)
+		{
+			HYDRA_ERROR("Failed to initialize GLAD!");
+			return;
+		}
+
+		HYDRA_INFO("Successfully initialized GLAD!");
+
+		// Initialize Renderer
 		m_Renderer.Init();
 
 		m_IsRunning = true;

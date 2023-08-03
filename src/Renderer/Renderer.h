@@ -1,13 +1,15 @@
 #pragma once   
 #include "Core/Logger.h"
 #include "Shaders/Shader.h"
+#include "Texture2D.h"
+#include "Sprite.h"
 
 namespace Hydra {
 
     class Renderer
     {
     public:
-        Renderer() = default;
+        Renderer();
 
         void Init();
         void InitQuadVAO();
@@ -16,8 +18,6 @@ namespace Hydra {
     private:
         unsigned int m_QuadVAO;
         Shader m_QuadShader;
-
-        static bool s_GLADInitialized;
+        Sprite m_TestSprite;
     };
-
 }

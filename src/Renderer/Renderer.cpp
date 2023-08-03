@@ -3,33 +3,28 @@
 
 #include "Renderer.h"
 #include "Core/Log.h"
+#include "Texture2D.h"
+#include "Core/ResourceManager.h"
 
 namespace Hydra {
-    bool Renderer::s_GLADInitialized = false;
+
+    Renderer::Renderer()
+        : m_QuadVAO(0), m_QuadShader(), m_TestSprite(Sprite())
+    {
+
+    }
 
     void Renderer::Init()
     {
-        if (!s_GLADInitialized)
-        {
-            // Initialize GLAD here
-            int gladSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-            if (!gladSuccess)
-            {
-                HYDRA_ERROR("Failed to initialize GLAD!");
-                return;
-            }
-
-            HYDRA_INFO("Successfully initialized GLAD!");
-        }
            
         InitQuadVAO();
         InitQuadShader();
+
+        m_TestSprite.LoadFromFile("res/NinjaAdventure/Actor/Characters/BlueNinja/Faceset.png");
     }
 
     void Renderer::InitQuadShader()
     {
-        // Get the current working directory
-
         m_QuadShader.Load(ShaderTypes::QuadShader);
     }
 
@@ -40,6 +35,7 @@ namespace Hydra {
 
         m_QuadShader.Use();
         glBindVertexArray(m_QuadVAO);
+        m_TestSprite.BindTexture();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
     
@@ -51,10 +47,10 @@ namespace Hydra {
         // Set up vertex data (and buffer(s)) and configure vertex attributes
         float vertices[] = {
             // Positions          // Colors           // Texture coords
-             0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,    // top right
-             0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,    // bottom right
-            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // Bottom left
-            -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // Top left 
+            -0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   0.0f, 1.0f,    // top left
+             0.5f,  0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,    // top right
+             0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 0.0f,    // bottom right
+            -0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.0f     // bottom left
         };
 
         unsigned int indices[] = {

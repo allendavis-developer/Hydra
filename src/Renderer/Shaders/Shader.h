@@ -9,15 +9,17 @@ namespace Hydra
             #version 330 core
             layout (location = 0) in vec3 aPos;
             layout (location = 1) in vec3 aColor;
-            layout (location = 2) in vec3 aTextureCoord;
+            layout (location = 2) in vec2 aTextureCoord;
             
             out vec3 color;
+            out vec2 textureCoord;
 
             void main()
             {
 	            gl_Position = vec4(aPos.xyz, 1.0f);
                 // Outputs
                 color = aColor;
+                textureCoord = aTextureCoord;
             }
         )";
 
@@ -26,10 +28,14 @@ namespace Hydra
             out vec4 fragColor;
             
             in vec3 color;
+            in vec2 textureCoord;
+
+            uniform sampler2D textureSampler;
+
 
             void main()
             {
-	            fragColor = vec4(color.xyz, 1.0f);
+	            fragColor = texture(textureSampler, textureCoord);
             }
         )";
     };
