@@ -3,10 +3,11 @@
 
 namespace Hydra {
 	// Static assignment
+	Logger Engine::m_Logger("Hydra");
 
 	// Constructor initializes some default values
 	Engine::Engine()
-		: m_IsRunning(false), m_Logger("Hydra")
+		: m_IsRunning(false), m_Renderer()
 	{
 
 	}
@@ -16,11 +17,11 @@ namespace Hydra {
 		// Initialize Logger
 		m_Logger.Init();
 		m_Logger.SetLevel(LogLevel::Trace);
-		m_Logger.Info("Started!");
+		m_Logger.Trace("Started!");
 
 		// Initializing window and renderer
 		m_Window.Init("HydraEngine", 1280, 720, &m_Logger);
-		m_Renderer.Init(&m_Logger);
+		m_Renderer.Init();
 
 		m_IsRunning = true;
 	}
@@ -28,7 +29,7 @@ namespace Hydra {
 	void Engine::Update()
 	{
 		// Code that runs every frame goes here
-		m_Logger.Info("Updating!");
+		m_Logger.Trace("Updating!");
 
 		// Program Loop
 		while (m_IsRunning)
@@ -48,7 +49,7 @@ namespace Hydra {
 	void Engine::Stop()
 	{
 		// Cleanup code goes here
-		m_Logger.Info("Stopped!");
+		m_Logger.Trace("Stopped!");
 		m_Window.Shutdown();
 	}
 }

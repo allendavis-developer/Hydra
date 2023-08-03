@@ -1,5 +1,6 @@
 #pragma once   
 #include "Core/Logger.h"
+#include "Shaders/Shader.h"
 
 namespace Hydra {
 
@@ -8,12 +9,14 @@ namespace Hydra {
     public:
         Renderer() = default;
 
-        void Init(Logger* logger);
+        void Init();
         void InitQuadVAO();
+        void InitQuadShader();
         void Draw();
     private:
-        Logger* m_Logger;
         unsigned int m_QuadVAO;
+        Shader m_QuadShader;
+
         static bool s_GLADInitialized;
     };
 

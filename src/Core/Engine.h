@@ -16,11 +16,13 @@ namespace Hydra {
 		void Update();
 		void Stop();
 
+		static Logger& GetLogger() { return m_Logger; }
+
 	private:
 		bool m_IsRunning;
 
 		// Engine components
-		Logger m_Logger;
+		static Logger m_Logger;
 		Window m_Window;
 		Renderer m_Renderer;
 

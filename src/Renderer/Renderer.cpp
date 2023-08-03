@@ -1,11 +1,13 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include "Renderer.h"
+#include "Core/Log.h"
 
 namespace Hydra {
     bool Renderer::s_GLADInitialized = false;
 
-    void Renderer::Init(Logger* logger)
+    void Renderer::Init()
     {
         if (!s_GLADInitialized)
         {
@@ -13,14 +15,22 @@ namespace Hydra {
             int gladSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
             if (!gladSuccess)
             {
-                logger->Error("Failed to initialize GLAD!");
+                HYDRA_ERROR("Failed to initialize GLAD!");
                 return;
             }
 
-            logger->Info("Successfully initialized GLAD!");
+            HYDRA_INFO("Successfully initialized GLAD!");
         }
-
+           
         InitQuadVAO();
+        InitQuadShader();
+    }
+
+    void Renderer::InitQuadShader()
+    {
+        // Get the current working directory
+
+        m_QuadShader.Load(ShaderTypes::QuadShader);
     }
 
     void Renderer::Draw()
@@ -28,6 +38,7 @@ namespace Hydra {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.2f, 0.7f, 0.7f, 1.0f);
 
+        m_QuadShader.Use();
         glBindVertexArray(m_QuadVAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
@@ -35,6 +46,7 @@ namespace Hydra {
     // Initializes the quad VAO -> with the VBO and the EBO
     void Renderer::InitQuadVAO()
     {
+        HYDRA_TRACE("Initializing quad VAO");
         // Copied from learnopengl.com
         // Set up vertex data (and buffer(s)) and configure vertex attributes
         float vertices[] = {

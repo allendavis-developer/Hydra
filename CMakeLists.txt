@@ -1,5 +1,6 @@
 ﻿cmake_minimum_required (VERSION 3.8)
 project ("Hydra")
+set(CMAKE_CXX_STANDARD 17)
 
 # Setting some useful variables
 set(HYDRA_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
@@ -12,6 +13,8 @@ file(GLOB HYDRA_SOURCES CONFIGURE_DEPENDS
 	"${HYDRA_SOURCE_DIR}/*.cpp"
 	"${HYDRA_SOURCE_DIR}/Core/*.cpp"
 	"${HYDRA_SOURCE_DIR}/Renderer/*.cpp"
+	"${HYDRA_SOURCE_DIR}/Renderer/Shaders/*.cpp"
+
 
 )
 

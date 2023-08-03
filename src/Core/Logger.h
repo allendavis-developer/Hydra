@@ -27,19 +27,19 @@ namespace Hydra {
 
 		// Error
 		template <typename... Args>
-		void Error(Args&&... args) { m_Logger->error(std::forward<Args>(args)...); }
+		void Error(Args&&... args) const { m_Logger->error(std::forward<Args>(args)...); }
 
 		// Warning
 		template<typename... Args>
-		void Warn(Args&&... args) { m_Logger->warn(std::forward<Args>(args)...); }
+		void Warn(Args&&... args) const { m_Logger->warn(std::forward<Args>(args)...); }
 
 		// Info
 		template<typename... Args>
-		void Info(Args&&... args) { m_Logger->info(std::forward<Args>(args)...); }
+		void Info(Args&&... args) const { m_Logger->info(std::forward<Args>(args)...); }
 
 		// Trace
 		template<typename... Args>
-		void Trace(Args&&... args) { m_Logger->trace(std::forward<Args>(args)...); }
+		void Trace(Args&&... args) const { m_Logger->trace(std::forward<Args>(args)...); }
 
 	private:
 		std::shared_ptr<spdlog::logger> m_Logger;
