@@ -18,12 +18,12 @@ namespace Hydra {
 
 		auto entity2 = std::make_shared<Entity>();
 		entity2->AddComponentConstruct<TransformComponent2D>(
-			Vector2<float>(800.0f, 560.0f), 0.0f, Vector2<float>(300.0f, 300.0f));
+			Vector2<float>(100.0f, 100.0f), 0.0f, Vector2<float>(200.0f, 200.0f));
 		entity2->AddComponentConstruct<SpriteComponent2D>
 			("res/NinjaAdventure/Actor/Monsters/Cyclope/Faceset.png");
 
-		SpriteRenderer::SubmitEntity(entity);
-		SpriteRenderer::SubmitEntity(entity2);
+		SpriteRenderer::Get().SubmitEntity(entity);
+		SpriteRenderer::Get().SubmitEntity(entity2);
 
 		AddEntityToWorld(entity);
 		AddEntityToWorld(entity2);

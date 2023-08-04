@@ -13,7 +13,7 @@ namespace Hydra {
 
 	// Constructor initializes some default values
 	Engine::Engine()
-		: m_IsRunning(false), m_Renderer()
+		: m_IsRunning(false)
 	{
 		
 	}
@@ -39,12 +39,12 @@ namespace Hydra {
 		HYDRA_INFO("Successfully initialized GLAD!");
 
 		// Initialize Renderer
-		m_Renderer.Init(1280, 720);
+		SpriteRenderer::Get().Init(1280, 720);
 
 		// Initialize editor
 		m_Editor.Init(m_Window.GetGLFWWindow());
 
-		m_Renderer.CreateFramebuffer();
+		SpriteRenderer::Get().CreateFramebuffer();
 
 		m_IsRunning = true;
 	}
@@ -63,9 +63,9 @@ namespace Hydra {
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			m_Renderer.BindFramebuffer();
-			m_Renderer.Draw();
-			m_Renderer.UnbindFramebuffer();
+			SpriteRenderer::Get().BindFramebuffer();
+			SpriteRenderer::Get().Draw();
+			SpriteRenderer::Get().UnbindFramebuffer();
 
 			guiEditor.ImGuiNewFrame();
 			guiEditor.Update();
@@ -84,7 +84,7 @@ namespace Hydra {
 		// Cleanup code goes here
 		m_Logger.Trace("Stopped!");
 		m_Window.Shutdown();
-		m_Renderer.Shutdown();
+		SpriteRenderer::Get().Shutdown();
 		m_Editor.Shutdown();
 	}
 }

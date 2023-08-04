@@ -8,6 +8,8 @@ namespace Hydra
 {
     struct ShaderSources
     {
+        ShaderSources() = default;
+
         const char* QuadVertexSource = R"(
             #version 330 core
             layout (location = 0) in vec3 aPos;
@@ -55,7 +57,8 @@ namespace Hydra
     class Shader
     {
     public:
-        Shader() = default;
+        Shader()
+            : m_ProgramID(0) {} 
         ~Shader();
         
         // Disabling copying and assignment

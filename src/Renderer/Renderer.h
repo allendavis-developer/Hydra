@@ -13,7 +13,12 @@ namespace Hydra {
     class SpriteRenderer
     {
     public:
-        SpriteRenderer();
+
+        inline static SpriteRenderer& Get()
+        {
+            static SpriteRenderer instance;
+            return instance;
+        }
         
         void Init(unsigned int windowWidth, unsigned int windowHeight);
         void Shutdown();
@@ -21,29 +26,27 @@ namespace Hydra {
         void InitQuadShader();
         void Draw();
 
-
-        void SetWindowSize(Vector2<unsigned int> windowSize) 
-            { m_WindowSize = windowSize; }
-
         // To be used by Engine
         void CreateFramebuffer();
         void BindFramebuffer();
         void UnbindFramebuffer();
         
         // Statics
-        static void SubmitEntity(const std::shared_ptr<Entity> entity);
-        static unsigned int GetRenderedTexture() { return m_RenderedTexture; }
+        void SubmitEntity(const std::shared_ptr<Entity> entity);
+        unsigned int GetRenderedTexture() { return m_RenderedTexture; }
     private:
+        SpriteRenderer();
+
         unsigned int m_QuadVAO;
         unsigned int m_FBO; // Frame buffer object
-        static unsigned int m_RenderedTexture; // Rendered texture ID
-        static unsigned int m_RBO; // Render buffer object
+        unsigned int m_RenderedTexture; // Rendered texture ID
+        unsigned int m_RBO; // Render buffer object
 
         Vector2<unsigned int> m_WindowSize;
 
         Shader m_QuadShader;
 
-        static std::vector<std::shared_ptr<Entity>> m_Entities;
+        std::vector<std::shared_ptr<Entity>> m_Entities;
 
         void DrawEntity(const std::shared_ptr<Entity> entity);
 

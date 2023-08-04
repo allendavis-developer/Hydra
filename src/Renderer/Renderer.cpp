@@ -14,13 +14,10 @@
 #include "ECS/TransformComponent.h"
 
 namespace Hydra {
-    std::vector<std::shared_ptr<Entity>> SpriteRenderer::m_Entities;
-    unsigned int SpriteRenderer::m_RenderedTexture; // Rendered texture ID
-    unsigned int SpriteRenderer::m_RBO; // Render buffer object
 
 
     SpriteRenderer::SpriteRenderer()
-        : m_QuadVAO(0), m_FBO(0)
+        : m_QuadVAO(0), m_FBO(0), m_RBO(0), m_RenderedTexture(0), m_QuadShader()
     {
 
     }

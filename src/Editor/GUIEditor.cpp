@@ -28,6 +28,7 @@ namespace Hydra {
 		// initialize ImGui's glfw/opengl implementation 
 		ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
+
 	}
 
 	// Cleans up imgui
@@ -48,27 +49,39 @@ namespace Hydra {
 	void GUIEditor::Update()
 	{
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
+		// Main Viewport Window!
 		ImGui::Begin("My Scene");
 
 		m_GameWindowSize.X = ImGui::GetContentRegionAvail().x;
 		m_GameWindowSize.Y = ImGui::GetContentRegionAvail().y;
+		ImGui::Button("Play!");
 
 		ImVec2 pos = ImGui::GetCursorScreenPos();
 
 		// Adding our created texture to ImGui
 		ImGui::GetWindowDrawList()->AddImage(
-			(void*)SpriteRenderer::GetRenderedTexture(),
+			(void*)SpriteRenderer::Get().GetRenderedTexture(),
 			ImVec2(pos.x, pos.y),
 			ImVec2(pos.x + 1280, pos.y + 720),
 			ImVec2(0, 1),
 			ImVec2(1, 0)
 		);
 
-
-		// Here we can render into the ImGui window
-		// ImGui Buttons, Drop Downs, etc. and later our framebuffer
-
 		ImGui::End();
+
+		// Properties window
+		ImGui::Begin("Properties");
+		ImGui::End();
+		
+		// Console window
+		ImGui::Begin("Console Output!");
+		ImGui::End();
+
+		// Entity list window
+		ImGui::Begin("Entity list");
+		ImGui::End();
+
 	}
 
 	void GUIEditor::Render()

@@ -17,9 +17,7 @@ namespace Hydra {
 		void Update();
 		void Stop();
 
-		static Logger& GetLogger() { return m_Logger; }
-
-
+		inline static Logger& GetLogger() { return m_Logger; }
 	private:
 		bool m_IsRunning;
 
@@ -27,7 +25,6 @@ namespace Hydra {
 		static Logger m_Logger;
 		Window m_Window;
 		HydraEditor m_Editor;
-		SpriteRenderer m_Renderer;
 
 	};
 }
