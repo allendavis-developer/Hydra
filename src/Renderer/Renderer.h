@@ -1,4 +1,6 @@
 #pragma once   
+#include <vector>
+
 #include "Core/Logger.h"
 #include "Shaders/Shader.h"
 #include "Texture2D.h"
@@ -6,23 +8,24 @@
 
 namespace Hydra {
 
-    class Renderer
+    class SpriteRenderer
     {
     public:
-        Renderer();
-
-        void Init();
+        SpriteRenderer();
+         
+        void Init(unsigned int windowWidth, unsigned int windowHeight);
         void InitQuadVAO();
         void InitQuadShader();
         void Draw();
-        void DrawSprite(const Sprite& sprite);
+        static void SubmitSprite(const Sprite* sprite);
 
         static const Shader& GetQuadShader() { return m_QuadShader; }
     private:
         unsigned int m_QuadVAO;
         static Shader m_QuadShader;
 
-        Sprite m_TestSprite;
-        Sprite m_TestSprite2;
+        static std::vector<const Sprite*> m_Sprites;
+
+        void DrawSprite(const Sprite* sprite);
     };
 }

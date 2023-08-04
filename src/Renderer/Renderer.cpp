@@ -11,17 +11,16 @@
 #include "Math/Vector2.h"
 
 namespace Hydra {
-    Shader Renderer::m_QuadShader;
+    Shader SpriteRenderer::m_QuadShader;
+    std::vector<const Sprite*> SpriteRenderer::m_Sprites;
 
-    Renderer::Renderer()
-        : m_QuadVAO(0), 
-        m_TestSprite(Vector2<float>(640.0f, 360.0f), 0.0f, Vector2<float>(300.0f, 300.0f)),
-        m_TestSprite2(Vector2<float>(720.0f, 500.0f), 0.0f, Vector2<float>(300.0f, 300.0f))
+    SpriteRenderer::SpriteRenderer()
+        : m_QuadVAO(0)
     {
 
     }
 
-    void Renderer::Init()
+    void SpriteRenderer::Init(unsigned int windowWidth, unsigned int windowHeight)
     {
         InitQuadVAO();
         InitQuadShader();
@@ -32,20 +31,18 @@ namespace Hydra {
         m_QuadShader.SetMat4("uView", view);
 
         // Creating the projection matrix
-        glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
+        glm::mat4 projection = glm::ortho(0.0f, (float)windowWidth, (float)windowHeight, 0.0f, -1.0f, 1.0f);
         m_QuadShader.SetMat4("uProjection", projection);
-
-        m_TestSprite.LoadFromFile("res/NinjaAdventure/Actor/Characters/BlueNinja/Faceset.png");
-        m_TestSprite2.LoadFromFile("res/NinjaAdventure/Actor/Characters/BlueNinja/Faceset.png");
 
     }
 
-    void Renderer::InitQuadShader()
+    void SpriteRenderer::InitQuadShader()
     {
         m_QuadShader.Load(ShaderTypes::QuadShader);
     }
 
-    void Renderer::Draw()
+    // Runs every frame
+    void SpriteRenderer::Draw()
     {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -53,20 +50,27 @@ namespace Hydra {
         // Preparing for rendering quads by binding the Quad VAO and using the Quad Shader
         m_QuadShader.Use();
         glBindVertexArray(m_QuadVAO);
-
-        DrawSprite(m_TestSprite);
-        DrawSprite(m_TestSprite2);
-
+           
+        // Rendering all the sprites
+        for (const Sprite* sprite : m_Sprites)
+        {
+            DrawSprite(sprite);
+        }
     }
 
-    void Renderer::DrawSprite(const Sprite& sprite)
+    void SpriteRenderer::SubmitSprite(const Sprite* sprite)
     {
-        sprite.Use();
+        m_Sprites.emplace_back(sprite);
+    }
+
+    void SpriteRenderer::DrawSprite(const Sprite* sprite)
+    {
+        sprite->Use();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
     
     // Initializes the quad VAO -> with the VBO and the EBO
-    void Renderer::InitQuadVAO()
+    void SpriteRenderer::InitQuadVAO()
     {
         HYDRA_TRACE("Initializing quad VAO");
         // Copied from learnopengl.com

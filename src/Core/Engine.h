@@ -3,6 +3,7 @@
 #include "Logger.h"
 #include "Window.h"
 #include "Renderer/Renderer.h"
+#include "Editor/HydraEditor.h"
 
 
 namespace Hydra {
@@ -24,7 +25,8 @@ namespace Hydra {
 		// Engine components
 		static Logger m_Logger;
 		Window m_Window;
-		Renderer m_Renderer;
+		HydraEditor m_Editor;
+		SpriteRenderer m_Renderer;
 
 	};
 }

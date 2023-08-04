@@ -9,7 +9,7 @@ namespace Hydra {
         ~Texture2D();
         // Disabling copying and assignment
         Texture2D(const Texture2D& other) = delete;
-        Texture2D& operator==(const Texture2D& other) = delete;
+        Texture2D& operator=(const Texture2D& other) = delete;
 
         void LoadFromFile(const std::string& filepath);
         void Bind() const;

@@ -13,7 +13,7 @@ namespace Hydra {
 
 	void Sprite::Use() const
 	{
-		const Shader& quadShader = Renderer::GetQuadShader();
+		const Shader& quadShader = SpriteRenderer::GetQuadShader();
 		quadShader.Use();
 
 		glm::mat4 model = glm::mat4(1.0f);

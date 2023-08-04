@@ -36,7 +36,10 @@ namespace Hydra {
 		HYDRA_INFO("Successfully initialized GLAD!");
 
 		// Initialize Renderer
-		m_Renderer.Init();
+		m_Renderer.Init(1280, 720);
+
+		// Initialize editor
+		m_Editor.Init();
 
 		m_IsRunning = true;
 	}

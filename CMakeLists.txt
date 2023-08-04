@@ -14,6 +14,8 @@ file(GLOB HYDRA_SOURCES CONFIGURE_DEPENDS
 	"${HYDRA_SOURCE_DIR}/Core/*.cpp"
 	"${HYDRA_SOURCE_DIR}/Renderer/*.cpp"
 	"${HYDRA_SOURCE_DIR}/Renderer/Shaders/*.cpp"
+	"${HYDRA_SOURCE_DIR}/Editor/*.cpp"
+
 )
 
 
@@ -49,7 +51,7 @@ target_include_directories(Hydra PUBLIC "${SPDLOG_DIR}/include")
 
 # glad
 set(GLAD_DIR "${HYDRA_VENDOR_DIR}/glad")
-add_library(glad "${GLAD_DIR}/src/glad.c")
+add_library(glad "${GLAD_DIR}/src/glad.c" "src/Editor/HydraEditor.h")
 # Making sure glad is built into vendor-builds
 set_target_properties(glad PROPERTIES
 	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/vendor-builds/glad"
@@ -62,7 +64,7 @@ target_include_directories(Hydra PUBLIC "${GLAD_DIR}/include")
 
 # stb_image
 set(STB_IMAGE_DIR "${HYDRA_VENDOR_DIR}/stb_image")
-add_library(stb_image "${STB_IMAGE_DIR}/stb_image_implementation.cpp")
+add_library(stb_image "${STB_IMAGE_DIR}/stb_image_implementation.cpp" "src/Editor/HydraEditor.h")
 # Making sure stb_image is built into vendor-builds
 set_target_properties(stb_image PROPERTIES
 	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/vendor-builds/stb_image"
