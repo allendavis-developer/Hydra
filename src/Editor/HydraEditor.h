@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
-#include "Renderer/Sprite.h"
+#include <memory>
+
+#include "ECS/Entity.h"
 
 namespace Hydra {
 	class HydraEditor
@@ -13,7 +15,8 @@ namespace Hydra {
 		HydraEditor& operator=(const HydraEditor& other) = delete;
 
 		void Init();
+		void AddEntityToWorld(std::shared_ptr<Entity>);
 	private:
-		std::vector<Sprite*> m_Sprites;
+		std::vector <std::shared_ptr<Entity>> m_Entities;
 	};
 }

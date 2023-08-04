@@ -1,34 +1,39 @@
 #include "HydraEditor.h"
 #include "Renderer/Renderer.h"
-#include "ECS/Entity.h"
-#include "ECS/TransformComponent.h"
 #include "Core/Log.h"
+
+#include "ECS/TransformComponent.h"
+#include "ECS/SpriteComponent.h"
 
 namespace Hydra {
 	void HydraEditor::Init()
 	{
-		Entity e;
-		auto transform = std::make_shared<TransformComponent2D>
-			(Vector2<float>(300.0f, 200.0f), 0.0f, Vector2<float>(200.0f, 200.0f));
+		auto entity = std::make_shared<Entity>();
+		entity->AddComponentConstruct<TransformComponent2D>(
+			Vector2<float>(500.0f, 360.0f), 0.0f, Vector2<float>(200.0f, 200.0f));
+		entity->AddComponentConstruct<SpriteComponent2D>
+			("res/NinjaAdventure/Actor/Characters/BlueNinja/SeparateAnim/Special2.png");
 
-		e.AddComponent(transform);
-		auto component = e.GetComponent<TransformComponent2D>();
+		auto entity2 = std::make_shared<Entity>();
+		entity2->AddComponentConstruct<TransformComponent2D>(
+			Vector2<float>(800.0f, 560.0f), 0.0f, Vector2<float>(300.0f, 300.0f));
+		entity2->AddComponentConstruct<SpriteComponent2D>
+			("res/NinjaAdventure/Actor/Monsters/Cyclope/Faceset.png");
 
-		HYDRA_INFO("Transform Component Position X: {0}", component->GetPosition().X);
+		SpriteRenderer::SubmitEntity(entity);
+		SpriteRenderer::SubmitEntity(entity2);
 
-		Sprite* sprite = new Sprite(Vector2<float>(300.0f, 200.0f), 
-				0.0f, Vector2<float>(200.0f, 200.0f));
-		sprite->LoadFromFile("res/NinjaAdventure/Actor/Characters/BlueSamurai/SeparateAnim/Special1.png");
-		m_Sprites.emplace_back(sprite);
-		SpriteRenderer::SubmitSprite(sprite);
+		AddEntityToWorld(entity);
+		AddEntityToWorld(entity2);
+
+	}
+
+	void HydraEditor::AddEntityToWorld(std::shared_ptr<Entity> entity)
+	{
+		m_Entities.emplace_back(entity);
 	}
 
 	HydraEditor::~HydraEditor()
 	{
-		// Deletes all the sprites
-		for (Sprite* sprite : m_Sprites)
-		{
-			delete sprite;
-		}
 	}
 }

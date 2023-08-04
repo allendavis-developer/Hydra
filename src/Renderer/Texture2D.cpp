@@ -35,9 +35,11 @@ namespace Hydra {
         {
         case 3:
             glColorChannels = GL_RGB;
+            HYDRA_INFO("Normal texture!");
             break;
         case 4:
             glColorChannels = GL_RGBA;
+            HYDRA_INFO("Alpha texture!");
             break;
         default:
             HYDRA_ERROR("Unsupported amount of color channels ({0}) loaded by Texture2D!", 

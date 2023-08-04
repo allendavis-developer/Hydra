@@ -25,6 +25,17 @@ namespace Hydra {
 			m_Components.emplace_back(component);
 		}
 
+		template<typename ComponentType, typename... Args>
+		void AddComponentConstruct(Args&&... args)
+		{
+			// Creating the component
+			std::shared_ptr<ComponentType> component = 
+				std::make_shared<ComponentType>(std::forward<Args>(args)...);
+
+			// Adding the component to the component list
+			m_Components.emplace_back(component);
+		}
+
 		template<typename ComponentType>
 		std::shared_ptr<ComponentType> GetComponent()
 		{
@@ -41,7 +52,10 @@ namespace Hydra {
 				}
 			}
 
+			// Returns nullptr if it wasn't found
+			return nullptr;
 		}
+
 	private:
 		std::vector<std::shared_ptr<Component>> m_Components;
 	};

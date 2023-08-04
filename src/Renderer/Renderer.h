@@ -4,7 +4,7 @@
 #include "Core/Logger.h"
 #include "Shaders/Shader.h"
 #include "Texture2D.h"
-#include "Sprite.h"
+#include "ECS/Entity.h"
 
 namespace Hydra {
 
@@ -17,15 +17,13 @@ namespace Hydra {
         void InitQuadVAO();
         void InitQuadShader();
         void Draw();
-        static void SubmitSprite(const Sprite* sprite);
-
-        static const Shader& GetQuadShader() { return m_QuadShader; }
+        static void SubmitEntity(const std::shared_ptr<Entity> entity);
     private:
         unsigned int m_QuadVAO;
-        static Shader m_QuadShader;
+        Shader m_QuadShader;
 
-        static std::vector<const Sprite*> m_Sprites;
+        static std::vector<std::shared_ptr<Entity>> m_Entities;
 
-        void DrawSprite(const Sprite* sprite);
+        void DrawEntity(const std::shared_ptr<Entity> entity);
     };
 }
