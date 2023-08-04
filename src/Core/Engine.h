@@ -19,6 +19,7 @@ namespace Hydra {
 
 		static Logger& GetLogger() { return m_Logger; }
 
+
 	private:
 		bool m_IsRunning;
 

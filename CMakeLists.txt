@@ -15,9 +15,7 @@ file(GLOB HYDRA_SOURCES CONFIGURE_DEPENDS
 	"${HYDRA_SOURCE_DIR}/Renderer/*.cpp"
 	"${HYDRA_SOURCE_DIR}/Renderer/Shaders/*.cpp"
 	"${HYDRA_SOURCE_DIR}/Editor/*.cpp"
-
 )
-
 
 
 # Add Hydra sources to be compiled
@@ -51,7 +49,7 @@ target_include_directories(Hydra PUBLIC "${SPDLOG_DIR}/include")
 
 # glad
 set(GLAD_DIR "${HYDRA_VENDOR_DIR}/glad")
-add_library(glad "${GLAD_DIR}/src/glad.c" "src/Editor/HydraEditor.h")
+add_library(glad "${GLAD_DIR}/src/glad.c")
 # Making sure glad is built into vendor-builds
 set_target_properties(glad PROPERTIES
 	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/vendor-builds/glad"
@@ -64,7 +62,8 @@ target_include_directories(Hydra PUBLIC "${GLAD_DIR}/include")
 
 # stb_image
 set(STB_IMAGE_DIR "${HYDRA_VENDOR_DIR}/stb_image")
-add_library(stb_image "${STB_IMAGE_DIR}/stb_image_implementation.cpp" "src/Editor/HydraEditor.h")
+add_library(stb_image "${STB_IMAGE_DIR}/stb_image_implementation.cpp")
+
 # Making sure stb_image is built into vendor-builds
 set_target_properties(stb_image PROPERTIES
 	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/vendor-builds/stb_image"
@@ -81,5 +80,32 @@ add_subdirectory("${GLM_DIR}" "${HYDRA_VENDOR_DIR}/glm")
 
 target_link_libraries(Hydra PRIVATE glm)
 target_include_directories(Hydra PUBLIC "${GLM_DIR}")
+
+# imgui
+set(IMGUI_DIR "${HYDRA_VENDOR_DIR}/imgui")
+add_library(imgui 
+	"${IMGUI_DIR}/imgui.cpp"
+	"${IMGUI_DIR}/imgui_demo.cpp"
+	"${IMGUI_DIR}/imgui_draw.cpp"
+	"${IMGUI_DIR}/imgui_tables.cpp"
+	"${IMGUI_DIR}/imgui_widgets.cpp"
+	"${IMGUI_DIR}/backends/imgui_impl_glfw.cpp"
+	"${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp"
+)
+
+target_include_directories(imgui PUBLIC "${IMGUI_DIR}")
+
+# Linking GLFW to imgui
+target_link_libraries(imgui PRIVATE glfw)
+target_include_directories(imgui PUBLIC "${GLFW_DIR}/include")
+
+set_target_properties(imgui PROPERTIES
+	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/vendor-builds/imgui"
+	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/vendor-builds/imgui"
+	LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/vendor-builds/imgui"
+)
+
+target_link_libraries(Hydra PRIVATE imgui)
+target_include_directories(Hydra PUBLIC "${IMGUI_DIR}" "${IMGUI_DIR}/backends")
 
 # ---------------------------------------------------------------------------

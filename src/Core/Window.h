@@ -25,6 +25,8 @@ namespace Hydra {
 		bool HasUserQuit() { return glfwWindowShouldClose(m_GLFWWindow); }
 		WindowData GetWindowData() { return m_Data; }
 
+		GLFWwindow* GetGLFWWindow() { return m_GLFWWindow; }
+
 		// Polls events for all active windows.
 		// This is static because GLFW doesn't need a window instance to poll events. It polls events for all Windows
 		static void PollEvents();

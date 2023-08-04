@@ -6,8 +6,10 @@
 #include "ECS/SpriteComponent.h"
 
 namespace Hydra {
-	void HydraEditor::Init()
+	void HydraEditor::Init(GLFWwindow* glfwWindow)
 	{
+		m_GUIEditor.Init(glfwWindow);
+
 		auto entity = std::make_shared<Entity>();
 		entity->AddComponentConstruct<TransformComponent2D>(
 			Vector2<float>(500.0f, 360.0f), 0.0f, Vector2<float>(200.0f, 200.0f));
@@ -28,12 +30,11 @@ namespace Hydra {
 
 	}
 
+
 	void HydraEditor::AddEntityToWorld(std::shared_ptr<Entity> entity)
 	{
 		m_Entities.emplace_back(entity);
 	}
 
-	HydraEditor::~HydraEditor()
-	{
-	}
+
 }

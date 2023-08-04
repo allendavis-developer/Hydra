@@ -39,7 +39,7 @@ namespace Hydra {
 		m_Renderer.Init(1280, 720);
 
 		// Initialize editor
-		m_Editor.Init();
+		m_Editor.Init(m_Window.GetGLFWWindow());
 
 		m_IsRunning = true;
 	}
@@ -48,14 +48,20 @@ namespace Hydra {
 	{
 		// Code that runs every frame goes here
 		m_Logger.Trace("Updating!");
+		GUIEditor& guiEditor = m_Editor.GetGUIEditor();
 
 		// Program Loop
 		while (m_IsRunning)
 		{
+			Window::PollEvents();
+
+			guiEditor.ImGuiNewFrame();
+			guiEditor.Update();
+
 			// Render logic here
 			m_Renderer.Draw();
+			guiEditor.Render();
 
-			Window::PollEvents();
 			m_Window.SwapBuffers();
 
 			if (m_Window.HasUserQuit())
@@ -69,5 +75,6 @@ namespace Hydra {
 		// Cleanup code goes here
 		m_Logger.Trace("Stopped!");
 		m_Window.Shutdown();
+		m_Editor.GetGUIEditor().Shutdown();
 	}
 }

@@ -14,9 +14,9 @@ namespace Hydra {
 		}
 		
 		// Getters
-		Vector2<float> GetPosition() const { return m_Position; }
-		Vector2<float> GetScale() const { return m_Scale; }
-		float GetRotation() const { return m_Rotation; }
+		inline Vector2<float> GetPosition() const { return m_Position; }
+		inline Vector2<float> GetScale() const { return m_Scale; }
+		inline float GetRotation() const { return m_Rotation; }
 
 		// Setters
 		void SetPosition(const Vector2<float>& position) { m_Position = position; }
