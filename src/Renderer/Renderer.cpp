@@ -15,7 +15,8 @@ namespace Hydra {
 
     Renderer::Renderer()
         : m_QuadVAO(0), 
-        m_TestSprite(Vector2<float>(640.0f, 360.0f), 0.0f, Vector2<float>(300.0f, 300.0f))
+        m_TestSprite(Vector2<float>(640.0f, 360.0f), 0.0f, Vector2<float>(300.0f, 300.0f)),
+        m_TestSprite2(Vector2<float>(720.0f, 500.0f), 0.0f, Vector2<float>(300.0f, 300.0f))
     {
 
     }
@@ -25,31 +26,42 @@ namespace Hydra {
         InitQuadVAO();
         InitQuadShader();
 
-        m_TestSprite.LoadFromFile("res/NinjaAdventure/Actor/Characters/BlueNinja/Faceset.png");
-    }
-
-    void Renderer::InitQuadShader()
-    {
-        m_QuadShader.Load(ShaderTypes::QuadShader);
-           
         // Creating the view matrix
         glm::mat4 view = glm::mat4(1.0f);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.0f));
         m_QuadShader.SetMat4("uView", view);
 
         // Creating the projection matrix
         glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
         m_QuadShader.SetMat4("uProjection", projection);
 
+        m_TestSprite.LoadFromFile("res/NinjaAdventure/Actor/Characters/BlueNinja/Faceset.png");
+        m_TestSprite2.LoadFromFile("res/NinjaAdventure/Actor/Characters/BlueNinja/Faceset.png");
+
+    }
+
+    void Renderer::InitQuadShader()
+    {
+        m_QuadShader.Load(ShaderTypes::QuadShader);
     }
 
     void Renderer::Draw()
     {
         glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(0.2f, 0.7f, 0.7f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
+        // Preparing for rendering quads by binding the Quad VAO and using the Quad Shader
         m_QuadShader.Use();
         glBindVertexArray(m_QuadVAO);
-        m_TestSprite.Use();
+
+        DrawSprite(m_TestSprite);
+        DrawSprite(m_TestSprite2);
+
+    }
+
+    void Renderer::DrawSprite(const Sprite& sprite)
+    {
+        sprite.Use();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
     
