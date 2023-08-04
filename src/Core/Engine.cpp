@@ -1,5 +1,8 @@
 #include <iostream>
 #include <glad/glad.h>
+#include <imgui.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_impl_glfw.h>
 
 #include "Engine.h"
 #include "Log.h"
@@ -41,6 +44,8 @@ namespace Hydra {
 		// Initialize editor
 		m_Editor.Init(m_Window.GetGLFWWindow());
 
+		m_Renderer.CreateFramebuffer();
+
 		m_IsRunning = true;
 	}
 
@@ -55,11 +60,15 @@ namespace Hydra {
 		{
 			Window::PollEvents();
 
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			m_Renderer.BindFramebuffer();
+			m_Renderer.Draw();
+			m_Renderer.UnbindFramebuffer();
+
 			guiEditor.ImGuiNewFrame();
 			guiEditor.Update();
-
-			// Render logic here
-			m_Renderer.Draw();
 			guiEditor.Render();
 
 			m_Window.SwapBuffers();
@@ -75,6 +84,7 @@ namespace Hydra {
 		// Cleanup code goes here
 		m_Logger.Trace("Stopped!");
 		m_Window.Shutdown();
-		m_Editor.GetGUIEditor().Shutdown();
+		m_Renderer.Shutdown();
+		m_Editor.Shutdown();
 	}
 }

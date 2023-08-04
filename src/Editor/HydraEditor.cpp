@@ -36,5 +36,10 @@ namespace Hydra {
 		m_Entities.emplace_back(entity);
 	}
 
+	void HydraEditor::Shutdown()
+	{
+		m_GUIEditor.Shutdown();
+	}
+
 
 }

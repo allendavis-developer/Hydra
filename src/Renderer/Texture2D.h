@@ -13,6 +13,7 @@ namespace Hydra {
 
         void LoadFromFile(const std::string& filepath);
         void Bind() const;
+        void Delete();
     private:
         unsigned int m_TextureID;
         int m_Width;

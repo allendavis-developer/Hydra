@@ -11,6 +11,11 @@ namespace Hydra {
 			m_Texture.LoadFromFile(filepath);
 		}
 
+		~SpriteComponent2D()
+		{
+			m_Texture.Delete();
+		}
+
 		inline const Texture2D& GetTexture() const { return m_Texture;  }
 
 	private:

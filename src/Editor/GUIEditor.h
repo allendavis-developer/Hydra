@@ -1,4 +1,5 @@
 #pragma once
+#include "Math/Vector2.h"
 
 namespace Hydra {
 	class GUIEditor
@@ -10,5 +11,10 @@ namespace Hydra {
 		void ImGuiNewFrame();
 		void Update();
 		void Render();
+		Vector2<float> GetGameWindowSize() { return m_GameWindowSize; }
+		Vector2<float> GetGameWindowPosition() { return m_GameWindowPosition; }
+	private:
+		Vector2<float> m_GameWindowSize;
+		Vector2<float> m_GameWindowPosition;
 	};
 }

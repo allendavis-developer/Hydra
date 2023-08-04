@@ -3,6 +3,8 @@
 #include <imgui_impl_glfw.h>
 #include <GLFW/glfw3.h>
 #include "GUIEditor.h"
+#include "Renderer/Renderer.h"
+#include "Core/Log.h"
 
 namespace Hydra {
 	// Initializes imgui
@@ -26,8 +28,6 @@ namespace Hydra {
 		// initialize ImGui's glfw/opengl implementation 
 		ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
-
-
 	}
 
 	// Cleans up imgui
@@ -47,9 +47,23 @@ namespace Hydra {
 
 	void GUIEditor::Update()
 	{
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		ImGui::Begin("My Scene");
 
-		ImGui::SetWindowFontScale(1.5f);
+		m_GameWindowSize.X = ImGui::GetContentRegionAvail().x;
+		m_GameWindowSize.Y = ImGui::GetContentRegionAvail().y;
+
+		ImVec2 pos = ImGui::GetCursorScreenPos();
+
+		// Adding our created texture to ImGui
+		ImGui::GetWindowDrawList()->AddImage(
+			(void*)SpriteRenderer::GetRenderedTexture(),
+			ImVec2(pos.x, pos.y),
+			ImVec2(pos.x + 1280, pos.y + 720),
+			ImVec2(0, 1),
+			ImVec2(1, 0)
+		);
+
 
 		// Here we can render into the ImGui window
 		// ImGui Buttons, Drop Downs, etc. and later our framebuffer

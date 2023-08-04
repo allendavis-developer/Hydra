@@ -17,6 +17,7 @@ namespace Hydra {
 
 		void Init(GLFWwindow* glfwWindow);
 		void AddEntityToWorld(std::shared_ptr<Entity>);
+		void Shutdown();
 
 		inline GUIEditor& GetGUIEditor() { return m_GUIEditor;  }
 	private:

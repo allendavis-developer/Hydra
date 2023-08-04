@@ -72,4 +72,10 @@ namespace Hydra {
         glActiveTexture(GL_TEXTURE0); 
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
     }
+
+
+    void Texture2D::Delete()
+    {
+        glDeleteTextures(1, &m_TextureID);
+    }
 }
