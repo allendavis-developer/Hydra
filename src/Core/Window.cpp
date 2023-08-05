@@ -1,6 +1,11 @@
 #include <iostream>
 #include "Engine.h"
 #include "Window.h"
+#include "Core/Log.h"
+
+#include "Events/EventManager.h"
+#include "Events/MouseEvent.h"
+
 
 namespace Hydra {
 	// Static assignment
@@ -46,6 +51,35 @@ namespace Hydra {
 		m_Logger->Info("Successfully created window!");
 
 		s_WindowInstancesCount += 1;
+
+		// Setting the user pointer to this instance of the Window class
+		// so I can use it in lambdas through glfwGetWindowUserPointer
+		glfwSetWindowUserPointer(m_GLFWWindow, this);
+
+		// Setting callbacks
+		glfwSetKeyCallback(m_GLFWWindow,
+			[](GLFWwindow* window, int key, int scancode, 
+				int action, int mods)
+			{
+				// Getting the window class associated with this window
+				Window* hydraWindow = (Window*)glfwGetWindowUserPointer(window);
+				// Calling the key callback function on that Window
+				hydraWindow->KeyCallback(key, action);
+			});
+
+		glfwSetMouseButtonCallback(m_GLFWWindow,
+			[](GLFWwindow* window, int button, int action, int mods)
+			{
+				// Getting the window class associated with this window
+				Window* hydraWindow = (Window*)glfwGetWindowUserPointer(window);
+
+				// Getting cursor position
+				double xpos, ypos;
+				glfwGetCursorPos(window, &xpos, &ypos);
+
+				// Calling the mouse button callback function on that Window
+				hydraWindow->MouseButton(button, action, Vector2<float>((float)xpos, (float)ypos));
+			});
 	}
 
 
@@ -65,6 +99,18 @@ namespace Hydra {
 	void Window::PollEvents()
 	{
 		glfwPollEvents();
+	}
+
+	void Window::KeyCallback(int key, int action)
+	{
+
+	}
+
+	void Window::MouseButton(int button, int action, Vector2<float> mousePosition)
+	{
+		EventManager::Get().Fire<MouseButtonEvent>(button, action, mousePosition);
+
+		Vector2<float> viewportMousePosition;
 	}
 
 	void Window::SwapBuffers()

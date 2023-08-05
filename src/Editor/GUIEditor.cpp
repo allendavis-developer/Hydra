@@ -15,7 +15,7 @@ namespace Hydra {
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 		ImGui::StyleColorsDark();
 		ImGuiStyle& style = ImGui::GetStyle();
@@ -59,6 +59,8 @@ namespace Hydra {
 
 		ImVec2 pos = ImGui::GetCursorScreenPos();
 
+		m_GameWindowPosition = Vector2<float>(pos.x, pos.y);
+
 		// Adding our created texture to ImGui
 		ImGui::GetWindowDrawList()->AddImage(
 			(void*)SpriteRenderer::Get().GetRenderedTexture(),
@@ -99,5 +101,11 @@ namespace Hydra {
 			glfwMakeContextCurrent(backupCurrentContext);
 		}
 
+	}
+
+
+	void GUIEditor::SelectEntity(std::shared_ptr<Entity> entity)
+	{
+		
 	}
 }

@@ -1,6 +1,8 @@
 #pragma once
-#include "Logger.h"
 #include <GLFW/glfw3.h>
+#include <Math/Vector2.h>
+
+#include "Logger.h"
 
 namespace Hydra {
 
@@ -30,6 +32,11 @@ namespace Hydra {
 		// Polls events for all active windows.
 		// This is static because GLFW doesn't need a window instance to poll events. It polls events for all Windows
 		static void PollEvents();
+
+		// Callbacks
+		void KeyCallback(int key, int action);
+		void MouseButton(int button, int action, Vector2<float> mousePosition);
+
 	private:
 		GLFWwindow* m_GLFWWindow;
 

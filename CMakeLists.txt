@@ -15,6 +15,8 @@ file(GLOB HYDRA_SOURCES CONFIGURE_DEPENDS
 	"${HYDRA_SOURCE_DIR}/Renderer/*.cpp"
 	"${HYDRA_SOURCE_DIR}/Renderer/Shaders/*.cpp"
 	"${HYDRA_SOURCE_DIR}/Editor/*.cpp"
+	"${HYDRA_SOURCE_DIR}/Events/*.cpp"
+
 )
 
 

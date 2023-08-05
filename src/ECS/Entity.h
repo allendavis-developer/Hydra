@@ -56,6 +56,9 @@ namespace Hydra {
 			return nullptr;
 		}
 
+		inline const std::vector<std::shared_ptr<Component>>& GetComponents() const
+			{ return m_Components; }
+
 	private:
 		std::vector<std::shared_ptr<Component>> m_Components;
 	};

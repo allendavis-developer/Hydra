@@ -17,5 +17,10 @@ namespace Hydra {
 		{
 
 		}
+
+		Vector2<T> operator-(Vector2<T> other)
+		{
+			return Vector2(X - other.X, Y - other.Y);
+		}
 	};
 }
