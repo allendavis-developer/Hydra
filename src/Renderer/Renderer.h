@@ -5,7 +5,10 @@
 #include "Shaders/Shader.h"
 #include "Texture2D.h"
 #include "ECS/Entity.h"
+#include "Camera.h"
 #include "Math/Vector2.h"
+
+#include "Events/Event.h"
 
 namespace Hydra {
 
@@ -14,7 +17,7 @@ namespace Hydra {
     {
     public:
 
-        inline static SpriteRenderer& Get()
+        inline static SpriteRenderer& GetEditorInstance()
         {
             static SpriteRenderer instance;
             return instance;
@@ -34,6 +37,10 @@ namespace Hydra {
         // Statics
         void SubmitEntity(const std::shared_ptr<Entity> entity);
         unsigned int GetRenderedTexture() { return m_RenderedTexture; }
+
+        // Event callbacks
+        void OnEditorCameraAddOffset(Event& event);
+        inline Camera2D& GetCamera() { return m_Camera; }
     private:
         SpriteRenderer();
 
@@ -43,12 +50,15 @@ namespace Hydra {
         unsigned int m_RBO; // Render buffer object
 
         Vector2<unsigned int> m_WindowSize;
-
+        
         Shader m_QuadShader;
+        Camera2D m_Camera;
+
 
         std::vector<std::shared_ptr<Entity>> m_Entities;
 
         void DrawEntity(const std::shared_ptr<Entity> entity);
+        void UpdateMatrixes();
 
     };
 }

@@ -5,6 +5,8 @@
 #include "Component.h"
 
 namespace Hydra {
+
+	using ComponentList = std::vector<std::shared_ptr<Component>>;
 	class Entity
 	{
 	public:
@@ -56,10 +58,10 @@ namespace Hydra {
 			return nullptr;
 		}
 
-		inline const std::vector<std::shared_ptr<Component>>& GetComponents() const
+		inline const ComponentList& GetComponents() const
 			{ return m_Components; }
 
 	private:
-		std::vector<std::shared_ptr<Component>> m_Components;
+		ComponentList m_Components;
 	};
 }

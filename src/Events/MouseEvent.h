@@ -35,4 +35,20 @@ namespace Hydra {
 
 		Vector2<float> m_PressedPosition;
 	};
+
+	class MouseMotionEvent : public Event
+	{
+	public:
+		MouseMotionEvent(Vector2<float> position)
+			: m_Position(position.X, position.Y)
+		{
+
+		}
+
+		inline Vector2<float> GetPosition() const { return m_Position; }
+
+		
+	private:
+		Vector2<float> m_Position;
+	};
 }

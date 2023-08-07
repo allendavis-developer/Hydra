@@ -33,9 +33,6 @@ namespace Hydra {
 		// This is static because GLFW doesn't need a window instance to poll events. It polls events for all Windows
 		static void PollEvents();
 
-		// Callbacks
-		void KeyCallback(int key, int action);
-		void MouseButton(int button, int action, Vector2<float> mousePosition);
 
 	private:
 		GLFWwindow* m_GLFWWindow;

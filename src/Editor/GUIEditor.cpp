@@ -2,11 +2,36 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 #include <GLFW/glfw3.h>
+
 #include "GUIEditor.h"
 #include "Renderer/Renderer.h"
+
 #include "Core/Log.h"
 
+
 namespace Hydra {
+
+	void TransformComponentGUI::Display() const 
+	{
+		auto transformComponent = std::dynamic_pointer_cast<TransformComponent2D>(m_Component);
+		Vector2<float> position = transformComponent->GetPosition();
+		Vector2<float> scale = transformComponent->GetScale();
+		float rotation = transformComponent->GetRotation();
+
+		ImGui::Text("TransformComponent!");
+
+		// ImGui code to display the position, scale, and rotation
+		ImGui::Text("Position: (%.2f, %.2f)", position.X, position.Y);
+		ImGui::Text("Scale: (%.2f, %.2f)", scale.X, scale.Y);
+		ImGui::Text("Rotation: %.2f", rotation);
+
+	}
+
+	void SpriteComponentGUI::Display() const 
+	{
+		ImGui::Text("SpriteComponent!");
+	}
+
 	// Initializes imgui
 	void GUIEditor::Init(GLFWwindow* glfwWindow)
 	{
@@ -28,6 +53,10 @@ namespace Hydra {
 		// initialize ImGui's glfw/opengl implementation 
 		ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
+
+		m_ComponentsToTheirGUIS[typeid(TransformComponent2D)] = &m_TransformComponentGUI;
+		m_ComponentsToTheirGUIS[typeid(SpriteComponent2D)] = &m_SpriteComponentGUI;
+
 
 	}
 
@@ -63,7 +92,7 @@ namespace Hydra {
 
 		// Adding our created texture to ImGui
 		ImGui::GetWindowDrawList()->AddImage(
-			(void*)SpriteRenderer::Get().GetRenderedTexture(),
+			(void*)SpriteRenderer::GetEditorInstance().GetRenderedTexture(),
 			ImVec2(pos.x, pos.y),
 			ImVec2(pos.x + 1280, pos.y + 720),
 			ImVec2(0, 1),
@@ -74,6 +103,12 @@ namespace Hydra {
 
 		// Properties window
 		ImGui::Begin("Properties");
+
+		for (ComponentGUI* componentGUI : m_EnabledComponentGUIs)
+		{
+			componentGUI->Display();
+		}
+
 		ImGui::End();
 		
 		// Console window
@@ -106,6 +141,26 @@ namespace Hydra {
 
 	void GUIEditor::SelectEntity(std::shared_ptr<Entity> entity)
 	{
-		
+		HYDRA_INFO("Entity Selected!");
+		const ComponentList& componentList = entity->GetComponents();
+		for (std::shared_ptr<Component> component : componentList)
+		{
+			// Finds the type of the component
+			std::type_index componentType = typeid(*component.get());
+			// Finds the relevant GUI type -> for example TransformComponentGUI for TransformComponent2D
+			// It uses a map to get this
+			ComponentGUI* relevantComponentGUI = m_ComponentsToTheirGUIS[componentType];
+
+			// Adds that to the enabled list
+			m_EnabledComponentGUIs.emplace_back(relevantComponentGUI);
+
+			// Gives a pointer to it to the component so it can display the values
+			relevantComponentGUI->SetComponent(component);
+		}
+	}
+
+	void GUIEditor::DeselectAllEntities()
+	{
+		m_EnabledComponentGUIs.clear();
 	}
 }

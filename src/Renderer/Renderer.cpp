@@ -13,9 +13,11 @@
 #include "ECS/SpriteComponent.h"
 #include "ECS/TransformComponent.h"
 
+#include "Events/EditorEvent.h"
+#include "Events/EventManager.h"
+
 namespace Hydra {
-
-
+    
     SpriteRenderer::SpriteRenderer()
         : m_QuadVAO(0), m_FBO(0), m_RBO(0), m_RenderedTexture(0), m_QuadShader()
     {
@@ -31,13 +33,12 @@ namespace Hydra {
         m_WindowSize.Y = windowHeight;
 
         // Creating the view matrix
-        glm::mat4 view = glm::mat4(1.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.0f));
-        m_QuadShader.SetMat4("uView", view);
+        //m_Camera.AddToPosition(Vector2<float>(320.0f, 0.0f));
+        m_QuadShader.SetMat4("uView", m_Camera.GetViewMatrix());
 
         // Creating the projection matrix
-        glm::mat4 projection = glm::ortho(0.0f, (float)windowWidth, (float)windowHeight, 0.0f, -1.0f, 1.0f);
-        m_QuadShader.SetMat4("uProjection", projection);
+        m_Camera.SetSize(Vector2<float>(windowWidth, windowHeight));
+        m_QuadShader.SetMat4("uProjection", m_Camera.GetProjectionMatrix());
 
         // Preparing for rendering quads by binding the Quad VAO and using the Quad Shader
         m_QuadShader.Use();
@@ -47,6 +48,22 @@ namespace Hydra {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        CONNECT_EVENT_FN(EditorCameraAddOffsetEvent, SpriteRenderer::OnEditorCameraAddOffset);
+
+    }
+
+    // Callbacks
+    void SpriteRenderer::OnEditorCameraAddOffset(Event& event)
+    {
+        // Casting it to the right event type
+        EditorCameraAddOffsetEvent& offsetEvent = *(EditorCameraAddOffsetEvent*)(&event);
+
+        Vector2<float> offset = offsetEvent.GetOffset();
+        offset.Normalize();
+        HYDRA_TRACE("Offset: ({0}, {1})", offset.X, offset.Y);
+
+        m_Camera.AddToPosition(Vector2<float>(offset.X, offset.Y) * 0.1);
+        UpdateMatrixes();
     }
 
     void SpriteRenderer::Shutdown()
@@ -65,6 +82,7 @@ namespace Hydra {
     // Runs every frame
     void SpriteRenderer::Draw()
     {
+        glClear(GL_COLOR_BUFFER_BIT);
         for (std::shared_ptr<Entity> entity : m_Entities)
         {
             DrawEntity(entity);
@@ -109,6 +127,12 @@ namespace Hydra {
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         }
+    }
+
+    void SpriteRenderer::UpdateMatrixes()
+    {
+        m_QuadShader.SetMat4("uView", m_Camera.GetViewMatrix());
+        m_QuadShader.SetMat4("uProjection", m_Camera.GetProjectionMatrix());
     }
 
     void SpriteRenderer::CreateFramebuffer()

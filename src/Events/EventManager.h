@@ -4,6 +4,7 @@
 
 #include "Event.h"
 
+
 namespace Hydra {
 	class EventManager
 	{
@@ -46,3 +47,5 @@ namespace Hydra {
 		std::map<std::type_index, EventFunctionVector> m_ConnectionList;
 	};
 }
+
+#define CONNECT_EVENT_FN(EventType, Function) EventManager::Get().Connect<EventType>(BIND_EVENT_FN(Function))

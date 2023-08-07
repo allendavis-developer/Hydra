@@ -24,6 +24,8 @@ namespace Hydra {
 
 		// Event callbacks
 		void OnMouseButtonEvent(Event& event);
+		void OnMouseMotionEvent(Event& event);
+
 
 		void CheckEntitiesSelected(Vector2<float> mousePosition);
 
@@ -32,7 +34,7 @@ namespace Hydra {
 
 	private:
 		std::vector <std::shared_ptr<Entity>> m_Entities;
-
+		bool m_IsCameraPanning = false;
 		GUIEditor m_GUIEditor;
 	};
 }

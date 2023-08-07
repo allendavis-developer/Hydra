@@ -2,6 +2,8 @@
 #include <functional>
 #include <vector>
 
+#define BIND_EVENT_FN(Function) std::bind(&Function, this, std::placeholders::_1)
+
 namespace Hydra {
 	class Event
 	{

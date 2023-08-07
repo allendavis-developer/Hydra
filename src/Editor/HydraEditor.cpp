@@ -7,6 +7,7 @@
 
 #include "Events/EventManager.h"
 #include "Events/MouseEvent.h"
+#include "Events/EditorEvent.h"
 
 namespace Hydra {
 	void HydraEditor::Init(GLFWwindow* glfwWindow)
@@ -25,24 +26,23 @@ namespace Hydra {
 		entity2->AddComponentConstruct<SpriteComponent2D>
 			("res/NinjaAdventure/Actor/Monsters/Cyclope/Faceset.png");
 
-		SpriteRenderer::Get().SubmitEntity(entity);
-		SpriteRenderer::Get().SubmitEntity(entity2);
+		SpriteRenderer::GetEditorInstance().SubmitEntity(entity);
+		SpriteRenderer::GetEditorInstance().SubmitEntity(entity2);
 
 		AddEntityToWorld(entity);
 		AddEntityToWorld(entity2);
 
-
 		// Event callbacks
-		EventManager::Get().Connect<MouseButtonEvent>(
-			std::bind(&HydraEditor::OnMouseButtonEvent, this, std::placeholders::_1)
-		);
+		
+		CONNECT_EVENT_FN(MouseButtonEvent, HydraEditor::OnMouseButtonEvent);
+		CONNECT_EVENT_FN(MouseMotionEvent, HydraEditor::OnMouseMotionEvent);
 	}
-
 
 	void HydraEditor::AddEntityToWorld(std::shared_ptr<Entity> entity)
 	{
 		m_Entities.emplace_back(entity);
 	}
+
 
 
 	void HydraEditor::Shutdown()
@@ -59,16 +59,40 @@ namespace Hydra {
 		Vector2<float> gameWindowMousePosition = 
 				mouseEvent.GetPressedPosition() - m_GUIEditor.GetGameWindowPosition();
 
-		if (mouseEvent.GetButton() == MouseButtonLeft && mouseEvent.GetAction() == MouseButtonPressed)
+		if (mouseEvent.GetButton() == MouseButtonLeft)
 		{
-			CheckEntitiesSelected(gameWindowMousePosition);
+			switch (mouseEvent.GetAction())
+			{
+			case MouseButtonPressed:
+				CheckEntitiesSelected(gameWindowMousePosition);
+				m_IsCameraPanning = true;
+				HYDRA_INFO("Camera pan start");
+				break;
+			case MouseButtonRelease:
+				m_IsCameraPanning = false;
+				HYDRA_INFO("Camera pan stop");
+				break;
+			}
+		}
+	}
+
+	void HydraEditor::OnMouseMotionEvent(Event& event)
+	{
+		MouseMotionEvent& mouseEvent = *(MouseMotionEvent*)(&event);
+
+		Vector2<float> mousePos = mouseEvent.GetPosition();
+
+		if (m_IsCameraPanning)
+		{
 		}
 	}
 
 
-	// TODO: This could be made more efficient by not looping through every single tntiy
+	// TODO: This could be made more efficient by not looping through every single entiy
 	void HydraEditor::CheckEntitiesSelected(Vector2<float> mousePosition)
 	{
+		m_GUIEditor.DeselectAllEntities();
+
 		for (auto entity : m_Entities)
 		{
 			auto transform = entity->GetComponent<TransformComponent2D>();
@@ -81,12 +105,11 @@ namespace Hydra {
 			bool isMouseInsideEntity = IsMousePositionInsideEntity(mousePosition, entityPosition, entityScale);
 			if (isMouseInsideEntity)
 			{
-				HYDRA_INFO("Entity Selected!");
-				break;
+				m_GUIEditor.SelectEntity(entity);
+				return;
 			}
-
-
 		}
+
 	}
 
 	// This could be made more efficient

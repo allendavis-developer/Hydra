@@ -63,8 +63,6 @@ namespace Hydra {
 			{
 				// Getting the window class associated with this window
 				Window* hydraWindow = (Window*)glfwGetWindowUserPointer(window);
-				// Calling the key callback function on that Window
-				hydraWindow->KeyCallback(key, action);
 			});
 
 		glfwSetMouseButtonCallback(m_GLFWWindow,
@@ -78,7 +76,16 @@ namespace Hydra {
 				glfwGetCursorPos(window, &xpos, &ypos);
 
 				// Calling the mouse button callback function on that Window
-				hydraWindow->MouseButton(button, action, Vector2<float>((float)xpos, (float)ypos));
+				EventManager::Get().Fire<MouseButtonEvent>(button, action, Vector2<float>((float)xpos, (float)ypos));
+			});
+
+		glfwSetCursorPosCallback(m_GLFWWindow, 
+			[](GLFWwindow* window, double xpos, double ypos)
+			{
+				// Getting the window class associated with this window
+				Window* hydraWindow = (Window*)glfwGetWindowUserPointer(window);
+
+				EventManager::Get().Fire<MouseMotionEvent>(Vector2<float>((float)xpos, (float)ypos));
 			});
 	}
 
@@ -101,17 +108,7 @@ namespace Hydra {
 		glfwPollEvents();
 	}
 
-	void Window::KeyCallback(int key, int action)
-	{
 
-	}
-
-	void Window::MouseButton(int button, int action, Vector2<float> mousePosition)
-	{
-		EventManager::Get().Fire<MouseButtonEvent>(button, action, mousePosition);
-
-		Vector2<float> viewportMousePosition;
-	}
 
 	void Window::SwapBuffers()
 	{
